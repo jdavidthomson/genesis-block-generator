@@ -107,7 +107,7 @@ size_t hex2bin(unsigned char *p, const char *hexstr, size_t len)
 	return ret;
 }
 
-Transaction *InitTransaction()
+Transaction *InitTransaction(int initialBlockReward)
 {
 	Transaction *transaction;
 	
@@ -124,7 +124,7 @@ Transaction *InitTransaction()
 	transaction->locktime = 0;
 	transaction->prevoutIndex = 0xFFFFFFFF;
 	transaction->sequence = 0xFFFFFFFF;
-	transaction->outValue = 50*COIN;
+	transaction->outValue = initialBlockReward*COIN;
 	
 	// We initialize the previous output to 0 as there is none
 	memset(transaction->prevOutput, 0, 32);
@@ -139,10 +139,10 @@ int main(int argc, char *argv[])
 	char timestamp[255], pubkey[132];
 	uint32_t timestamp_len = 0, scriptSig_len = 0, pubkey_len = 0, pubkeyScript_len = 0;
 	uint32_t nBits = 0;
-	
-	if((argc-1) < 3)
+	int initialBlockReward = 0;
+	if((argc-1) < 4)
 	{
-		fprintf(stderr, "Usage: genesisgen [options] <pubkey> \"<timestamp>\" <nBits>\n");
+		fprintf(stderr, "Usage: genesisgen [options] <pubkey> \"<timestamp>\" <nBits> <initialBlockReward>\n");
 		return 0;		
 	}
 	
@@ -160,8 +160,8 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Size of timestamp is 0 or exceeds maximum length of 254 characters!\n");
 		return 0;
 	}	
-
-	transaction = InitTransaction();
+	initialBlockReward = atoi(argv[4]);
+	transaction = InitTransaction(initialBlockReward);
 	if(!transaction)
 	{
 		fprintf(stderr, "Could not allocate memory! Exiting...\n");
