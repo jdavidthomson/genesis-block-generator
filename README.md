@@ -6,11 +6,11 @@ Original post https://bitcointalk.org/index.php?topic=181981.0
 Compile:
 --------
 ```bash
-  gcc generator.c -o generator -lcrypto
+  gcc generator.c -o genesisgen -lcrypto
 ```
 Usage:
 ------
-  generator &lt;pubkey&gt; &lt;timestamp&gt; &lt;nBits&gt; &lt;initialBlockReward&gt;
+  genesisgen &lt;pubkey&gt; &lt;timestamp&gt; &lt;nBits&gt; &lt;initialBlockReward&gt;
   
 Example:
 --------
